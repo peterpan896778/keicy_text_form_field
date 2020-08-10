@@ -204,11 +204,11 @@ class KeicyTextFormField extends StatelessWidget {
                                   onTap: onTapHandler,
                                   onChanged: (input) {
                                     customTextFormFieldProvider.setErrorText("");
-                                    if (onChangeHandler != null) onChangeHandler(input);
+                                    if (onChangeHandler != null) onChangeHandler(input.trim());
                                   },
                                   validator: (input) {
                                     if (validatorHandler == null) return null;
-                                    var result = validatorHandler(input);
+                                    var result = validatorHandler(input.trim());
                                     if (result != null)
                                       customTextFormFieldProvider.setIsValidated(false, result);
                                     else
@@ -240,7 +240,7 @@ class KeicyTextFormField extends StatelessWidget {
                         (customTextFormFieldProvider.errorText != "")
                             ? Container(
                                 height: errorStringFontSize,
-                                // alignment: Alignment.topLeft,
+                                alignment: Alignment.centerLeft,
                                 child: Text(
                                   customTextFormFieldProvider.errorText,
                                   style: TextStyle(fontSize: errorStringFontSize, color: Colors.red),
