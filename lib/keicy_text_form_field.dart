@@ -108,7 +108,7 @@ class KeicyTextFormField extends StatelessWidget {
     if (errorStringFontSize == null) errorStringFontSize = textFontSize * 0.8;
 
     return Material(
-      color: fillColor,
+      color: Colors.transparent,
       child: MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_) => KeicyTextFormFieldProvider()),
