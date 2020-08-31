@@ -239,7 +239,7 @@ class KeicyTextFormField extends StatelessWidget {
                         ),
                         (customTextFormFieldProvider.errorText != "")
                             ? Container(
-                                height: errorStringFontSize,
+                                height: textFontSize,
                                 alignment: Alignment.centerLeft,
                                 child: Text(
                                   customTextFormFieldProvider.errorText,
