@@ -172,7 +172,7 @@ class KeicyTextFormField extends StatelessWidget {
                             border: (customTextFormFieldProvider.errorText == "") ? border : errorBorder,
                             borderRadius: ((customTextFormFieldProvider.errorText == "" && border.isUniform) ||
                                     (customTextFormFieldProvider.errorText != "" && errorBorder.isUniform))
-                                ? BorderRadius.circular(widthDp * borderRadius)
+                                ? BorderRadius.circular(borderRadius)
                                 : null,
                           ),
                           child: Row(
