@@ -123,9 +123,9 @@ class KeicyTextFormField extends StatelessWidget {
             }
 
             if (enableShowPassword && !customTextFormFieldProvider.isShownPassword) {
-              suffixIcon = FaIcon(FontAwesomeIcons.eye, size: textStyle.fontSize * 1.2, color: textStyle.color);
+              suffixIcon = FaIcon(FontAwesomeIcons.eye, size: textStyle.fontSize, color: textStyle.color);
             } else if (enableShowPassword && customTextFormFieldProvider.isShownPassword) {
-              suffixIcon = FaIcon(FontAwesomeIcons.eyeSlash, size: textStyle.fontSize * 1.2, color: textStyle.color);
+              suffixIcon = FaIcon(FontAwesomeIcons.eyeSlash, size: textStyle.fontSize, color: textStyle.color);
             }
 
             return Container(
@@ -154,7 +154,7 @@ class KeicyTextFormField extends StatelessWidget {
                         (label != "")
                             ? Column(
                                 children: [
-                                  Text(label, style: labelStyle),
+                                  Text(label, style: labelStyle ?? textStyle),
                                   SizedBox(height: widthDp * labelSpacing),
                                 ],
                               )
