@@ -146,7 +146,7 @@ class KeicyTextFormField extends StatelessWidget {
                         )
                       : SizedBox(),
                   Expanded(
-                    child: Column(
+                    Widget: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -183,7 +183,7 @@ class KeicyTextFormField extends StatelessWidget {
                               (!isPrefixIconOutofField && prefixIcons.length != 0) ? prefixIcon : SizedBox(),
                               (!isPrefixIconOutofField && prefixIcons.length != 0) ? SizedBox(width: widthDp * iconSpacing) : SizedBox(),
                               Expanded(
-                                child: TextFormField(
+                                Widget: TextFormField(
                                   focusNode: focusNode,
                                   initialValue: controller == null ? initialValue : null,
                                   controller: controller,
@@ -249,7 +249,7 @@ class KeicyTextFormField extends StatelessWidget {
                             ],
                           ),
                         ),
-                        (customTextFormFieldProvider.errorText != "")
+                        (customTextFormFieldProvider.errorText != "" && errorStringFontSize != 0)
                             ? Container(
                                 height: errorStringFontSize + widthDp * 8,
                                 alignment: Alignment.centerLeft,
@@ -258,7 +258,9 @@ class KeicyTextFormField extends StatelessWidget {
                                   style: TextStyle(fontSize: errorStringFontSize, color: Colors.red),
                                 ),
                               )
-                            : (fixedHeightState) ? SizedBox(height: errorStringFontSize + widthDp * 8) : SizedBox(),
+                            : (fixedHeightState)
+                                ? SizedBox(height: errorStringFontSize + widthDp * 8)
+                                : SizedBox(),
                       ],
                     ),
                   ),
