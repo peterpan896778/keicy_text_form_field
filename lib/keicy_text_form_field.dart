@@ -146,7 +146,7 @@ class KeicyTextFormField extends StatelessWidget {
                         )
                       : SizedBox(),
                   Expanded(
-                    Widget: Column(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -183,7 +183,7 @@ class KeicyTextFormField extends StatelessWidget {
                               (!isPrefixIconOutofField && prefixIcons.length != 0) ? prefixIcon : SizedBox(),
                               (!isPrefixIconOutofField && prefixIcons.length != 0) ? SizedBox(width: widthDp * iconSpacing) : SizedBox(),
                               Expanded(
-                                Widget: TextFormField(
+                                child: TextFormField(
                                   focusNode: focusNode,
                                   initialValue: controller == null ? initialValue : null,
                                   controller: controller,
