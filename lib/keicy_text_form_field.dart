@@ -196,7 +196,7 @@ class KeicyTextFormField extends StatelessWidget {
                                   keyboardType: keyboardType,
                                   autovalidate: autovalidate,
                                   decoration: InputDecoration(
-                                    errorStyle: TextStyle(fontSize: 0, color: fillColor, height: 0),
+                                    errorStyle: TextStyle(fontSize: 0, color: Colors.transparent, height: 0),
                                     isDense: true,
                                     isCollapsed: true,
                                     hintText: hintText,
@@ -208,7 +208,7 @@ class KeicyTextFormField extends StatelessWidget {
                                     errorBorder: InputBorder.none,
                                     disabledBorder: InputBorder.none,
                                     filled: true,
-                                    fillColor: fillColor,
+                                    fillColor: Colors.transparent,
                                     contentPadding: EdgeInsets.zero,
                                   ),
                                   inputFormatters: inputFormatters,
@@ -258,9 +258,7 @@ class KeicyTextFormField extends StatelessWidget {
                                   style: TextStyle(fontSize: errorStringFontSize, color: Colors.red),
                                 ),
                               )
-                            : (fixedHeightState)
-                                ? SizedBox(height: errorStringFontSize + widthDp * 8)
-                                : SizedBox(),
+                            : (fixedHeightState) ? SizedBox(height: errorStringFontSize + widthDp * 8) : SizedBox(),
                       ],
                     ),
                   ),
