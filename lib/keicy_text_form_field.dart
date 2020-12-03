@@ -10,6 +10,7 @@ class KeicyTextFormField extends StatelessWidget {
     @required this.width,
     @required this.height,
     @required this.widthDp,
+    @required this.heightDp,
     this.initialValue,
     this.controller,
     this.fixedHeightState = true,
@@ -18,18 +19,18 @@ class KeicyTextFormField extends StatelessWidget {
     this.isPrefixIconOutofField = false,
     this.isSuffixIconOutofField = false,
     this.enableShowPassword = false,
-    this.iconSpacing = 10,
+    this.iconSpacing,
     this.label = "",
     this.labelStyle,
-    this.labelSpacing = 10,
+    this.labelSpacing,
     this.border = const Border(bottom: BorderSide(width: 1, color: Colors.black)),
     this.errorBorder = const Border(bottom: BorderSide(width: 1, color: Colors.red)),
     this.borderRadius = 0,
     this.textStyle = const TextStyle(fontSize: 20, color: Colors.black),
     this.hintStyle = const TextStyle(fontSize: 20, color: Colors.grey),
     this.hintText = "",
-    this.contentHorizontalPadding = 5,
-    this.contentVerticalPadding = 5,
+    this.contentHorizontalPadding,
+    this.contentVerticalPadding,
     this.textAlign = TextAlign.left,
     this.keyboardType = TextInputType.text,
     this.validatorHandler,
@@ -53,6 +54,7 @@ class KeicyTextFormField extends StatelessWidget {
   final double width;
   final double height;
   final double widthDp;
+  final double heightDp;
   final String initialValue;
   final TextEditingController controller;
   final bool fixedHeightState;
@@ -141,7 +143,7 @@ class KeicyTextFormField extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             prefixIcon,
-                            SizedBox(width: widthDp * iconSpacing),
+                            SizedBox(width: iconSpacing ?? widthDp * 10),
                           ],
                         )
                       : SizedBox(),
@@ -155,7 +157,7 @@ class KeicyTextFormField extends StatelessWidget {
                             ? Column(
                                 children: [
                                   Text(label, style: labelStyle ?? textStyle),
-                                  SizedBox(height: widthDp * labelSpacing),
+                                  SizedBox(height: labelSpacing ?? heightDp * labelSpacing),
                                 ],
                               )
                             : SizedBox(),
@@ -163,8 +165,8 @@ class KeicyTextFormField extends StatelessWidget {
                           width: double.maxFinite,
                           height: height,
                           padding: EdgeInsets.symmetric(
-                            horizontal: widthDp * contentHorizontalPadding,
-                            vertical: widthDp * contentVerticalPadding,
+                            horizontal: contentHorizontalPadding ?? widthDp * 5,
+                            vertical: contentVerticalPadding ?? height * 5,
                           ),
                           alignment: (keyboardType == TextInputType.multiline) ? Alignment.topLeft : Alignment.center,
                           decoration: BoxDecoration(
@@ -181,7 +183,7 @@ class KeicyTextFormField extends StatelessWidget {
                             children: <Widget>[
                               /// prefix icon
                               (!isPrefixIconOutofField && prefixIcons.length != 0) ? prefixIcon : SizedBox(),
-                              (!isPrefixIconOutofField && prefixIcons.length != 0) ? SizedBox(width: widthDp * iconSpacing) : SizedBox(),
+                              (!isPrefixIconOutofField && prefixIcons.length != 0) ? SizedBox(width: iconSpacing ?? widthDp * 10) : SizedBox(),
                               Expanded(
                                 child: TextFormField(
                                   focusNode: focusNode,
@@ -236,7 +238,7 @@ class KeicyTextFormField extends StatelessWidget {
                                 ),
                               ),
                               ((!isSuffixIconOutofField && suffixIcons.length != 0) || enableShowPassword)
-                                  ? SizedBox(width: widthDp * iconSpacing)
+                                  ? SizedBox(width: iconSpacing ?? widthDp * 10)
                                   : SizedBox(),
                               GestureDetector(
                                 child: ((!isSuffixIconOutofField && suffixIcons.length != 0) || enableShowPassword) ? suffixIcon : SizedBox(),
@@ -262,7 +264,7 @@ class KeicyTextFormField extends StatelessWidget {
                       ],
                     ),
                   ),
-                  (isSuffixIconOutofField && suffixIcons.length != 0) ? SizedBox(width: iconSpacing) : SizedBox(),
+                  (isSuffixIconOutofField && suffixIcons.length != 0) ? SizedBox(width: iconSpacing ?? widthDp * 10) : SizedBox(),
                   (isSuffixIconOutofField && suffixIcons.length != 0) ? suffixIcon : SizedBox(),
                 ],
               ),
