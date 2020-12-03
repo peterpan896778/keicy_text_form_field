@@ -68,12 +68,10 @@ class KeicyTextFormField extends StatelessWidget {
   final double borderRadius;
   final double contentHorizontalPadding;
   final double contentVerticalPadding;
-
   final TextStyle textStyle;
   final TextStyle hintStyle;
   final String hintText;
   final Color fillColor;
-
   double errorStringFontSize;
   final focusNode;
 
