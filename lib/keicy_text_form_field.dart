@@ -9,8 +9,6 @@ class KeicyTextFormField extends StatelessWidget {
     Key key,
     @required this.width,
     @required this.height,
-    @required this.widthDp,
-    @required this.heightDp,
     this.initialValue,
     this.controller,
     this.fixedHeightState = true,
@@ -53,8 +51,6 @@ class KeicyTextFormField extends StatelessWidget {
 
   final double width;
   final double height;
-  final double widthDp;
-  final double heightDp;
   final String initialValue;
   final TextEditingController controller;
   final bool fixedHeightState;
@@ -86,7 +82,7 @@ class KeicyTextFormField extends StatelessWidget {
 
   final bool autovalidate;
   final bool obscureText;
-  final Function validatorHandler;
+  final Function(String) validatorHandler;
   final Function(String) onSaveHandler;
   final Function(String) onChangeHandler;
   final Function(String) onFieldSubmittedHandler;
@@ -143,7 +139,7 @@ class KeicyTextFormField extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             prefixIcon,
-                            SizedBox(width: iconSpacing ?? widthDp * 10),
+                            SizedBox(width: iconSpacing ?? 10),
                           ],
                         )
                       : SizedBox(),
@@ -157,7 +153,7 @@ class KeicyTextFormField extends StatelessWidget {
                             ? Column(
                                 children: [
                                   Text(label, style: labelStyle ?? textStyle),
-                                  SizedBox(height: labelSpacing ?? heightDp * labelSpacing),
+                                  SizedBox(height: labelSpacing ?? labelSpacing),
                                 ],
                               )
                             : SizedBox(),
@@ -165,7 +161,7 @@ class KeicyTextFormField extends StatelessWidget {
                           width: double.maxFinite,
                           height: height,
                           padding: EdgeInsets.symmetric(
-                            horizontal: contentHorizontalPadding ?? widthDp * 5,
+                            horizontal: contentHorizontalPadding ?? 5,
                             vertical: contentVerticalPadding ?? height * 5,
                           ),
                           alignment: (keyboardType == TextInputType.multiline) ? Alignment.topLeft : Alignment.center,
@@ -183,7 +179,7 @@ class KeicyTextFormField extends StatelessWidget {
                             children: <Widget>[
                               /// prefix icon
                               (!isPrefixIconOutofField && prefixIcons.length != 0) ? prefixIcon : SizedBox(),
-                              (!isPrefixIconOutofField && prefixIcons.length != 0) ? SizedBox(width: iconSpacing ?? widthDp * 10) : SizedBox(),
+                              (!isPrefixIconOutofField && prefixIcons.length != 0) ? SizedBox(width: iconSpacing ?? 10) : SizedBox(),
                               Expanded(
                                 child: TextFormField(
                                   focusNode: focusNode,
@@ -238,7 +234,7 @@ class KeicyTextFormField extends StatelessWidget {
                                 ),
                               ),
                               ((!isSuffixIconOutofField && suffixIcons.length != 0) || enableShowPassword)
-                                  ? SizedBox(width: iconSpacing ?? widthDp * 10)
+                                  ? SizedBox(width: iconSpacing ?? 10)
                                   : SizedBox(),
                               GestureDetector(
                                 child: ((!isSuffixIconOutofField && suffixIcons.length != 0) || enableShowPassword) ? suffixIcon : SizedBox(),
@@ -253,18 +249,18 @@ class KeicyTextFormField extends StatelessWidget {
                         ),
                         (customTextFormFieldProvider.errorText != "" && errorStringFontSize != 0)
                             ? Container(
-                                height: errorStringFontSize + widthDp * 8,
+                                height: errorStringFontSize + 8,
                                 alignment: Alignment.centerLeft,
                                 child: Text(
                                   customTextFormFieldProvider.errorText,
                                   style: TextStyle(fontSize: errorStringFontSize, color: Colors.red),
                                 ),
                               )
-                            : (fixedHeightState) ? SizedBox(height: errorStringFontSize + widthDp * 8) : SizedBox(),
+                            : (fixedHeightState) ? SizedBox(height: errorStringFontSize + 8) : SizedBox(),
                       ],
                     ),
                   ),
-                  (isSuffixIconOutofField && suffixIcons.length != 0) ? SizedBox(width: iconSpacing ?? widthDp * 10) : SizedBox(),
+                  (isSuffixIconOutofField && suffixIcons.length != 0) ? SizedBox(width: iconSpacing ?? 10) : SizedBox(),
                   (isSuffixIconOutofField && suffixIcons.length != 0) ? suffixIcon : SizedBox(),
                 ],
               ),
