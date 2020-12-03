@@ -73,7 +73,7 @@ class KeicyTextFormField extends StatelessWidget {
   final String hintText;
   final Color fillColor;
   double errorStringFontSize;
-  final focusNode;
+  FocusNode focusNode;
 
   final TextAlign textAlign;
   final TextInputType keyboardType;
@@ -95,6 +95,7 @@ class KeicyTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (errorStringFontSize == null) errorStringFontSize = textStyle.fontSize * 0.8;
+    focusNode = focusNode ?? FocusNode();
 
     return Material(
       color: Colors.transparent,
@@ -124,143 +125,150 @@ class KeicyTextFormField extends StatelessWidget {
               suffixIcon = FaIcon(FontAwesomeIcons.eyeSlash, size: textStyle.fontSize, color: textStyle.color);
             }
 
-            return Container(
-              width: width,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  /// prefix Icon
-                  (isPrefixIconOutofField && prefixIcons.length != 0)
-                      ? Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            prefixIcon,
-                            SizedBox(width: iconSpacing ?? 10),
-                          ],
-                        )
-                      : SizedBox(),
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        /// label
-                        (label != "")
-                            ? Column(
-                                children: [
-                                  Text(label, style: labelStyle ?? textStyle),
-                                  SizedBox(height: labelSpacing ?? labelSpacing),
-                                ],
-                              )
-                            : SizedBox(),
-                        Container(
-                          width: double.maxFinite,
-                          height: height,
-                          padding: EdgeInsets.symmetric(
-                            horizontal: contentHorizontalPadding ?? 5,
-                            vertical: contentVerticalPadding ?? height * 5,
-                          ),
-                          alignment: (keyboardType == TextInputType.multiline) ? Alignment.topLeft : Alignment.center,
-                          decoration: BoxDecoration(
-                            color: fillColor,
-                            border: (customTextFormFieldProvider.errorText == "") ? border : errorBorder,
-                            borderRadius: ((customTextFormFieldProvider.errorText == "" && border.isUniform) ||
-                                    (customTextFormFieldProvider.errorText != "" && errorBorder.isUniform))
-                                ? BorderRadius.circular(borderRadius)
-                                : null,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              /// prefix icon
-                              (!isPrefixIconOutofField && prefixIcons.length != 0) ? prefixIcon : SizedBox(),
-                              (!isPrefixIconOutofField && prefixIcons.length != 0) ? SizedBox(width: iconSpacing ?? 10) : SizedBox(),
-                              Expanded(
-                                child: TextFormField(
-                                  focusNode: focusNode,
-                                  initialValue: controller == null ? initialValue : null,
-                                  controller: controller,
-                                  style: textStyle,
-                                  autofocus: autofocus,
-                                  maxLines: maxLines,
-                                  textInputAction: textInputAction,
-                                  readOnly: readOnly,
-                                  textAlign: textAlign,
-                                  keyboardType: keyboardType,
-                                  autovalidate: autovalidate,
-                                  decoration: InputDecoration(
-                                    errorStyle: TextStyle(fontSize: 0, color: Colors.transparent, height: 0),
-                                    isDense: true,
-                                    isCollapsed: true,
-                                    hintText: hintText,
-                                    hintStyle: hintStyle,
-                                    border: InputBorder.none,
-                                    enabledBorder: InputBorder.none,
-                                    focusedBorder: InputBorder.none,
-                                    focusedErrorBorder: InputBorder.none,
-                                    errorBorder: InputBorder.none,
-                                    disabledBorder: InputBorder.none,
-                                    filled: true,
-                                    fillColor: Colors.transparent,
-                                    contentPadding: EdgeInsets.zero,
-                                  ),
-                                  inputFormatters: inputFormatters,
-                                  obscureText: (!enableShowPassword) ? obscureText : !customTextFormFieldProvider.isShownPassword,
-                                  onTap: onTapHandler,
-                                  onChanged: (input) {
-                                    customTextFormFieldProvider.setErrorText("");
-                                    if (onChangeHandler != null) onChangeHandler(input.trim());
-                                  },
-                                  validator: (input) {
-                                    if (validatorHandler == null) return null;
-                                    var result = validatorHandler(input.trim());
-                                    if (result != null)
-                                      customTextFormFieldProvider.setIsValidated(false, result);
-                                    else
-                                      customTextFormFieldProvider.setIsValidated(true, "");
-                                    return result;
-                                  },
-                                  onSaved: (input) {
-                                    if (onSaveHandler == null) return null;
-                                    onSaveHandler(input.trim());
-                                  },
-                                  onEditingComplete: onEditingCompleteHandler,
-                                  onFieldSubmitted: onFieldSubmittedHandler,
-                                ),
-                              ),
-                              ((!isSuffixIconOutofField && suffixIcons.length != 0) || enableShowPassword)
-                                  ? SizedBox(width: iconSpacing ?? 10)
-                                  : SizedBox(),
-                              GestureDetector(
-                                child: ((!isSuffixIconOutofField && suffixIcons.length != 0) || enableShowPassword) ? suffixIcon : SizedBox(),
-                                onTap: () {
-                                  if (enableShowPassword) {
-                                    customTextFormFieldProvider.setIsShownPassword(!customTextFormFieldProvider.isShownPassword);
-                                  }
-                                },
-                              )
+            return GestureDetector(
+              onTap: () {
+                FocusScope.of(context).requestFocus(focusNode);
+              },
+              child: Container(
+                width: width,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    /// prefix Icon
+                    (isPrefixIconOutofField && prefixIcons.length != 0)
+                        ? Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              prefixIcon,
+                              SizedBox(width: iconSpacing ?? 10),
                             ],
-                          ),
-                        ),
-                        (customTextFormFieldProvider.errorText != "" && errorStringFontSize != 0)
-                            ? Container(
-                                height: errorStringFontSize + 8,
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  customTextFormFieldProvider.errorText,
-                                  style: TextStyle(fontSize: errorStringFontSize, color: Colors.red),
+                          )
+                        : SizedBox(),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          /// label
+                          (label != "")
+                              ? Column(
+                                  children: [
+                                    Text(label, style: labelStyle ?? textStyle),
+                                    SizedBox(height: labelSpacing ?? labelSpacing),
+                                  ],
+                                )
+                              : SizedBox(),
+                          Container(
+                            width: double.maxFinite,
+                            height: height,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: contentHorizontalPadding ?? 5,
+                              vertical: contentVerticalPadding ?? height * 5,
+                            ),
+                            alignment: (keyboardType == TextInputType.multiline) ? Alignment.topLeft : Alignment.center,
+                            decoration: BoxDecoration(
+                              color: fillColor,
+                              border: (customTextFormFieldProvider.errorText == "") ? border : errorBorder,
+                              borderRadius: ((customTextFormFieldProvider.errorText == "" && border.isUniform) ||
+                                      (customTextFormFieldProvider.errorText != "" && errorBorder.isUniform))
+                                  ? BorderRadius.circular(borderRadius)
+                                  : null,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                /// prefix icon
+                                (!isPrefixIconOutofField && prefixIcons.length != 0) ? prefixIcon : SizedBox(),
+                                (!isPrefixIconOutofField && prefixIcons.length != 0) ? SizedBox(width: iconSpacing ?? 10) : SizedBox(),
+                                Expanded(
+                                  child: TextFormField(
+                                    focusNode: focusNode,
+                                    initialValue: controller == null ? initialValue : null,
+                                    controller: controller,
+                                    style: textStyle,
+                                    autofocus: autofocus,
+                                    maxLines: maxLines,
+                                    textInputAction: textInputAction,
+                                    readOnly: readOnly,
+                                    textAlign: textAlign,
+                                    keyboardType: keyboardType,
+                                    autovalidate: autovalidate,
+                                    decoration: InputDecoration(
+                                      errorStyle: TextStyle(fontSize: 0, color: Colors.transparent, height: 0),
+                                      isDense: true,
+                                      isCollapsed: true,
+                                      hintText: hintText,
+                                      hintStyle: hintStyle,
+                                      border: InputBorder.none,
+                                      enabledBorder: InputBorder.none,
+                                      focusedBorder: InputBorder.none,
+                                      focusedErrorBorder: InputBorder.none,
+                                      errorBorder: InputBorder.none,
+                                      disabledBorder: InputBorder.none,
+                                      filled: true,
+                                      fillColor: Colors.transparent,
+                                      contentPadding: EdgeInsets.symmetric(
+                                        vertical: (height - contentVerticalPadding * 2 - textStyle.fontSize) / 2,
+                                      ),
+                                    ),
+                                    inputFormatters: inputFormatters,
+                                    obscureText: (!enableShowPassword) ? obscureText : !customTextFormFieldProvider.isShownPassword,
+                                    onTap: onTapHandler,
+                                    onChanged: (input) {
+                                      customTextFormFieldProvider.setErrorText("");
+                                      if (onChangeHandler != null) onChangeHandler(input.trim());
+                                    },
+                                    validator: (input) {
+                                      if (validatorHandler == null) return null;
+                                      var result = validatorHandler(input.trim());
+                                      if (result != null)
+                                        customTextFormFieldProvider.setIsValidated(false, result);
+                                      else
+                                        customTextFormFieldProvider.setIsValidated(true, "");
+                                      return result;
+                                    },
+                                    onSaved: (input) {
+                                      if (onSaveHandler == null) return null;
+                                      onSaveHandler(input.trim());
+                                    },
+                                    onEditingComplete: onEditingCompleteHandler,
+                                    onFieldSubmitted: onFieldSubmittedHandler,
+                                  ),
                                 ),
-                              )
-                            : (fixedHeightState) ? SizedBox(height: errorStringFontSize + 8) : SizedBox(),
-                      ],
+                                ((!isSuffixIconOutofField && suffixIcons.length != 0) || enableShowPassword)
+                                    ? SizedBox(width: iconSpacing ?? 10)
+                                    : SizedBox(),
+                                GestureDetector(
+                                  child: ((!isSuffixIconOutofField && suffixIcons.length != 0) || enableShowPassword) ? suffixIcon : SizedBox(),
+                                  onTap: () {
+                                    if (enableShowPassword) {
+                                      customTextFormFieldProvider.setIsShownPassword(!customTextFormFieldProvider.isShownPassword);
+                                    }
+                                  },
+                                )
+                              ],
+                            ),
+                          ),
+                          (customTextFormFieldProvider.errorText != "" && errorStringFontSize != 0)
+                              ? Container(
+                                  height: errorStringFontSize + 8,
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    customTextFormFieldProvider.errorText,
+                                    style: TextStyle(fontSize: errorStringFontSize, color: Colors.red),
+                                  ),
+                                )
+                              : (fixedHeightState) ? SizedBox(height: errorStringFontSize + 8) : SizedBox(),
+                        ],
+                      ),
                     ),
-                  ),
-                  (isSuffixIconOutofField && suffixIcons.length != 0) ? SizedBox(width: iconSpacing ?? 10) : SizedBox(),
-                  (isSuffixIconOutofField && suffixIcons.length != 0) ? suffixIcon : SizedBox(),
-                ],
+                    (isSuffixIconOutofField && suffixIcons.length != 0) ? SizedBox(width: iconSpacing ?? 10) : SizedBox(),
+                    (isSuffixIconOutofField && suffixIcons.length != 0) ? suffixIcon : SizedBox(),
+                  ],
+                ),
               ),
             );
           },
