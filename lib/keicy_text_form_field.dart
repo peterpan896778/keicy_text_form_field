@@ -17,7 +17,7 @@ class KeicyTextFormField extends StatelessWidget {
     this.isPrefixIconOutofField = false,
     this.isSuffixIconOutofField = false,
     this.enableShowPassword = false,
-    this.iconSpacing,
+    this.iconSpacing = 10,
     this.label = "",
     this.labelStyle,
     this.labelSpacing,
@@ -27,8 +27,8 @@ class KeicyTextFormField extends StatelessWidget {
     this.textStyle = const TextStyle(fontSize: 20, color: Colors.black),
     this.hintStyle = const TextStyle(fontSize: 20, color: Colors.grey),
     this.hintText = "",
-    this.contentHorizontalPadding,
-    this.contentVerticalPadding,
+    this.contentHorizontalPadding = 5,
+    this.contentVerticalPadding = 5,
     this.textAlign = TextAlign.left,
     this.keyboardType = TextInputType.text,
     this.validatorHandler,
@@ -142,7 +142,7 @@ class KeicyTextFormField extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               prefixIcon,
-                              SizedBox(width: iconSpacing ?? 10),
+                              SizedBox(width: iconSpacing),
                             ],
                           )
                         : SizedBox(),
@@ -164,15 +164,14 @@ class KeicyTextFormField extends StatelessWidget {
                             width: double.maxFinite,
                             height: height,
                             padding: EdgeInsets.symmetric(
-                              horizontal: contentHorizontalPadding ?? 5,
-                              vertical: contentVerticalPadding ?? height * 5,
+                              horizontal: contentHorizontalPadding,
+                              vertical: contentVerticalPadding,
                             ),
                             alignment: (keyboardType == TextInputType.multiline) ? Alignment.topLeft : Alignment.center,
                             decoration: BoxDecoration(
                               color: fillColor,
                               border: (customTextFormFieldProvider.errorText == "") ? border : errorBorder,
-                              borderRadius: ((customTextFormFieldProvider.errorText == "" && border.isUniform) ||
-                                      (customTextFormFieldProvider.errorText != "" && errorBorder.isUniform))
+                              borderRadius: ((customTextFormFieldProvider.errorText == "" && border.isUniform) || (customTextFormFieldProvider.errorText != "" && errorBorder.isUniform))
                                   ? BorderRadius.circular(borderRadius)
                                   : null,
                             ),
@@ -182,7 +181,7 @@ class KeicyTextFormField extends StatelessWidget {
                               children: <Widget>[
                                 /// prefix icon
                                 (!isPrefixIconOutofField && prefixIcons.length != 0) ? prefixIcon : SizedBox(),
-                                (!isPrefixIconOutofField && prefixIcons.length != 0) ? SizedBox(width: iconSpacing ?? 10) : SizedBox(),
+                                (!isPrefixIconOutofField && prefixIcons.length != 0) ? SizedBox(width: iconSpacing) : SizedBox(),
                                 Expanded(
                                   child: TextFormField(
                                     focusNode: focusNode,
@@ -238,9 +237,7 @@ class KeicyTextFormField extends StatelessWidget {
                                     onFieldSubmitted: onFieldSubmittedHandler,
                                   ),
                                 ),
-                                ((!isSuffixIconOutofField && suffixIcons.length != 0) || enableShowPassword)
-                                    ? SizedBox(width: iconSpacing ?? 10)
-                                    : SizedBox(),
+                                ((!isSuffixIconOutofField && suffixIcons.length != 0) || enableShowPassword) ? SizedBox(width: iconSpacing) : SizedBox(),
                                 GestureDetector(
                                   child: ((!isSuffixIconOutofField && suffixIcons.length != 0) || enableShowPassword) ? suffixIcon : SizedBox(),
                                   onTap: () {
@@ -265,7 +262,7 @@ class KeicyTextFormField extends StatelessWidget {
                         ],
                       ),
                     ),
-                    (isSuffixIconOutofField && suffixIcons.length != 0) ? SizedBox(width: iconSpacing ?? 10) : SizedBox(),
+                    (isSuffixIconOutofField && suffixIcons.length != 0) ? SizedBox(width: iconSpacing) : SizedBox(),
                     (isSuffixIconOutofField && suffixIcons.length != 0) ? suffixIcon : SizedBox(),
                   ],
                 ),
@@ -279,8 +276,7 @@ class KeicyTextFormField extends StatelessWidget {
 }
 
 class KeicyTextFormFieldProvider extends ChangeNotifier {
-  static KeicyTextFormFieldProvider of(BuildContext context, {bool listen = false}) =>
-      Provider.of<KeicyTextFormFieldProvider>(context, listen: listen);
+  static KeicyTextFormFieldProvider of(BuildContext context, {bool listen = false}) => Provider.of<KeicyTextFormFieldProvider>(context, listen: listen);
 
   bool _isValidated = false;
   bool get isValidated => _isValidated;
