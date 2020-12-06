@@ -209,9 +209,7 @@ class KeicyTextFormField extends StatelessWidget {
                                       disabledBorder: InputBorder.none,
                                       filled: true,
                                       fillColor: Colors.transparent,
-                                      contentPadding: EdgeInsets.symmetric(
-                                        vertical: (height - contentVerticalPadding * 2 - textStyle.fontSize) / 2,
-                                      ),
+                                      contentPadding: EdgeInsets.zero,
                                     ),
                                     inputFormatters: inputFormatters,
                                     obscureText: (!enableShowPassword) ? obscureText : !customTextFormFieldProvider.isShownPassword,
