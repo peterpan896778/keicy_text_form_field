@@ -11,7 +11,7 @@ class KeicyTextFormField extends StatelessWidget {
     @required this.height,
     this.initialValue,
     this.controller,
-    this.fixedHeightState = true,
+    this.fixedHeightState = false,
     this.prefixIcons = const [],
     this.suffixIcons = const [],
     this.isPrefixIconOutofField = false,
@@ -171,7 +171,8 @@ class KeicyTextFormField extends StatelessWidget {
                             decoration: BoxDecoration(
                               color: fillColor,
                               border: (customTextFormFieldProvider.errorText == "") ? border : errorBorder,
-                              borderRadius: ((customTextFormFieldProvider.errorText == "" && border.isUniform) || (customTextFormFieldProvider.errorText != "" && errorBorder.isUniform))
+                              borderRadius: ((customTextFormFieldProvider.errorText == "" && border.isUniform) ||
+                                      (customTextFormFieldProvider.errorText != "" && errorBorder.isUniform))
                                   ? BorderRadius.circular(borderRadius)
                                   : null,
                             ),
@@ -181,7 +182,9 @@ class KeicyTextFormField extends StatelessWidget {
                               children: <Widget>[
                                 /// prefix icon
                                 (!isPrefixIconOutofField && prefixIcons.length != 0) ? prefixIcon : SizedBox(),
-                                (!isPrefixIconOutofField && prefixIcons.length != 0) ? SizedBox(width: iconSpacing) : SizedBox(),
+                                (!isPrefixIconOutofField && prefixIcons.length != 0)
+                                    ? SizedBox(width: iconSpacing)
+                                    : SizedBox(),
                                 Expanded(
                                   child: TextFormField(
                                     focusNode: focusNode,
@@ -212,7 +215,9 @@ class KeicyTextFormField extends StatelessWidget {
                                       contentPadding: EdgeInsets.zero,
                                     ),
                                     inputFormatters: inputFormatters,
-                                    obscureText: (!enableShowPassword) ? obscureText : !customTextFormFieldProvider.isShownPassword,
+                                    obscureText: (!enableShowPassword)
+                                        ? obscureText
+                                        : !customTextFormFieldProvider.isShownPassword,
                                     onTap: onTapHandler,
                                     onChanged: (input) {
                                       customTextFormFieldProvider.setErrorText("");
@@ -235,12 +240,17 @@ class KeicyTextFormField extends StatelessWidget {
                                     onFieldSubmitted: onFieldSubmittedHandler,
                                   ),
                                 ),
-                                ((!isSuffixIconOutofField && suffixIcons.length != 0) || enableShowPassword) ? SizedBox(width: iconSpacing) : SizedBox(),
+                                ((!isSuffixIconOutofField && suffixIcons.length != 0) || enableShowPassword)
+                                    ? SizedBox(width: iconSpacing)
+                                    : SizedBox(),
                                 GestureDetector(
-                                  child: ((!isSuffixIconOutofField && suffixIcons.length != 0) || enableShowPassword) ? suffixIcon : SizedBox(),
+                                  child: ((!isSuffixIconOutofField && suffixIcons.length != 0) || enableShowPassword)
+                                      ? suffixIcon
+                                      : SizedBox(),
                                   onTap: () {
                                     if (enableShowPassword) {
-                                      customTextFormFieldProvider.setIsShownPassword(!customTextFormFieldProvider.isShownPassword);
+                                      customTextFormFieldProvider
+                                          .setIsShownPassword(!customTextFormFieldProvider.isShownPassword);
                                     }
                                   },
                                 )
@@ -274,7 +284,8 @@ class KeicyTextFormField extends StatelessWidget {
 }
 
 class KeicyTextFormFieldProvider extends ChangeNotifier {
-  static KeicyTextFormFieldProvider of(BuildContext context, {bool listen = false}) => Provider.of<KeicyTextFormFieldProvider>(context, listen: listen);
+  static KeicyTextFormFieldProvider of(BuildContext context, {bool listen = false}) =>
+      Provider.of<KeicyTextFormFieldProvider>(context, listen: listen);
 
   bool _isValidated = false;
   bool get isValidated => _isValidated;
