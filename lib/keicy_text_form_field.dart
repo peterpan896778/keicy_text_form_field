@@ -42,7 +42,7 @@ class KeicyTextFormField extends StatelessWidget {
     this.onFieldSubmittedHandler,
     this.onEditingCompleteHandler,
     this.maxLines = 1,
-    this.textInputAction = TextInputAction.none,
+    this.textInputAction = TextInputAction.done,
     this.readOnly = false,
     this.errorStringFontSize,
     this.inputFormatters,
