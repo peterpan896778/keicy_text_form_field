@@ -1,7 +1,6 @@
 library keicy_text_form_field;
 
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class KeicyTextFormField extends StatelessWidget {
@@ -119,12 +118,6 @@ class KeicyTextFormField extends StatelessWidget {
               suffixIcon = suffixIcons.length == 2 ? suffixIcons[1] : suffixIcons[0];
             }
 
-            if (enableShowPassword && !customTextFormFieldProvider.isShownPassword) {
-              suffixIcon = FaIcon(FontAwesomeIcons.eye, size: textStyle.fontSize, color: textStyle.color);
-            } else if (enableShowPassword && customTextFormFieldProvider.isShownPassword) {
-              suffixIcon = FaIcon(FontAwesomeIcons.eyeSlash, size: textStyle.fontSize, color: textStyle.color);
-            }
-
             return GestureDetector(
               onTap: () {
                 FocusScope.of(context).requestFocus(focusNode);
@@ -171,8 +164,7 @@ class KeicyTextFormField extends StatelessWidget {
                             decoration: BoxDecoration(
                               color: fillColor,
                               border: (customTextFormFieldProvider.errorText == "") ? border : errorBorder,
-                              borderRadius: ((customTextFormFieldProvider.errorText == "" && border.isUniform) ||
-                                      (customTextFormFieldProvider.errorText != "" && errorBorder.isUniform))
+                              borderRadius: ((customTextFormFieldProvider.errorText == "" && border.isUniform) || (customTextFormFieldProvider.errorText != "" && errorBorder.isUniform))
                                   ? BorderRadius.circular(borderRadius)
                                   : null,
                             ),
@@ -182,9 +174,7 @@ class KeicyTextFormField extends StatelessWidget {
                               children: <Widget>[
                                 /// prefix icon
                                 (!isPrefixIconOutofField && prefixIcons.length != 0) ? prefixIcon : SizedBox(),
-                                (!isPrefixIconOutofField && prefixIcons.length != 0)
-                                    ? SizedBox(width: iconSpacing)
-                                    : SizedBox(),
+                                (!isPrefixIconOutofField && prefixIcons.length != 0) ? SizedBox(width: iconSpacing) : SizedBox(),
                                 Expanded(
                                   child: TextFormField(
                                     focusNode: focusNode,
@@ -215,9 +205,7 @@ class KeicyTextFormField extends StatelessWidget {
                                       contentPadding: EdgeInsets.zero,
                                     ),
                                     inputFormatters: inputFormatters,
-                                    obscureText: (!enableShowPassword)
-                                        ? obscureText
-                                        : !customTextFormFieldProvider.isShownPassword,
+                                    obscureText: obscureText,
                                     onTap: onTapHandler,
                                     onChanged: (input) {
                                       customTextFormFieldProvider.setErrorText("");
@@ -240,20 +228,8 @@ class KeicyTextFormField extends StatelessWidget {
                                     onFieldSubmitted: onFieldSubmittedHandler,
                                   ),
                                 ),
-                                ((!isSuffixIconOutofField && suffixIcons.length != 0) || enableShowPassword)
-                                    ? SizedBox(width: iconSpacing)
-                                    : SizedBox(),
-                                GestureDetector(
-                                  child: ((!isSuffixIconOutofField && suffixIcons.length != 0) || enableShowPassword)
-                                      ? suffixIcon
-                                      : SizedBox(),
-                                  onTap: () {
-                                    if (enableShowPassword) {
-                                      customTextFormFieldProvider
-                                          .setIsShownPassword(!customTextFormFieldProvider.isShownPassword);
-                                    }
-                                  },
-                                )
+                                ((!isSuffixIconOutofField && suffixIcons.length != 0) || enableShowPassword) ? SizedBox(width: iconSpacing) : SizedBox(),
+                                ((!isSuffixIconOutofField && suffixIcons.length != 0) || enableShowPassword) ? suffixIcon : SizedBox()
                               ],
                             ),
                           ),
@@ -266,7 +242,9 @@ class KeicyTextFormField extends StatelessWidget {
                                     style: TextStyle(fontSize: errorStringFontSize, color: Colors.red),
                                   ),
                                 )
-                              : (fixedHeightState) ? SizedBox(height: errorStringFontSize + 8) : SizedBox(),
+                              : (fixedHeightState)
+                                  ? SizedBox(height: errorStringFontSize + 8)
+                                  : SizedBox(),
                         ],
                       ),
                     ),
@@ -284,23 +262,13 @@ class KeicyTextFormField extends StatelessWidget {
 }
 
 class KeicyTextFormFieldProvider extends ChangeNotifier {
-  static KeicyTextFormFieldProvider of(BuildContext context, {bool listen = false}) =>
-      Provider.of<KeicyTextFormFieldProvider>(context, listen: listen);
+  static KeicyTextFormFieldProvider of(BuildContext context, {bool listen = false}) => Provider.of<KeicyTextFormFieldProvider>(context, listen: listen);
 
   bool _isValidated = false;
   bool get isValidated => _isValidated;
 
   String _errorText = "";
   String get errorText => _errorText;
-
-  bool _isShownPassword = false;
-  bool get isShownPassword => _isShownPassword;
-  void setIsShownPassword(bool isShownPassword) {
-    if (_isShownPassword != isShownPassword) {
-      _isShownPassword = isShownPassword;
-      notifyListeners();
-    }
-  }
 
   void setErrorText(String errorText) {
     if (_errorText != errorText) {
