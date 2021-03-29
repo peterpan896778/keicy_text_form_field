@@ -28,7 +28,7 @@ class KeicyTextFormField extends StatelessWidget {
     this.hintText = "",
     this.contentHorizontalPadding = 5,
     this.contentVerticalPadding = 5,
-    this.textAlign = TextAlign.left,
+    this.textAlign = TextAlign.start,
     this.keyboardType = TextInputType.text,
     this.validatorHandler,
     this.onSaveHandler,
@@ -164,7 +164,8 @@ class KeicyTextFormField extends StatelessWidget {
                             decoration: BoxDecoration(
                               color: fillColor,
                               border: (customTextFormFieldProvider.errorText == "") ? border : errorBorder,
-                              borderRadius: ((customTextFormFieldProvider.errorText == "" && border.isUniform) || (customTextFormFieldProvider.errorText != "" && errorBorder.isUniform))
+                              borderRadius: ((customTextFormFieldProvider.errorText == "" && border.isUniform) ||
+                                      (customTextFormFieldProvider.errorText != "" && errorBorder.isUniform))
                                   ? BorderRadius.circular(borderRadius)
                                   : null,
                             ),
@@ -228,7 +229,9 @@ class KeicyTextFormField extends StatelessWidget {
                                     onFieldSubmitted: onFieldSubmittedHandler,
                                   ),
                                 ),
-                                ((!isSuffixIconOutofField && suffixIcons.length != 0) || enableShowPassword) ? SizedBox(width: iconSpacing) : SizedBox(),
+                                ((!isSuffixIconOutofField && suffixIcons.length != 0) || enableShowPassword)
+                                    ? SizedBox(width: iconSpacing)
+                                    : SizedBox(),
                                 ((!isSuffixIconOutofField && suffixIcons.length != 0) || enableShowPassword) ? suffixIcon : SizedBox()
                               ],
                             ),
@@ -236,7 +239,6 @@ class KeicyTextFormField extends StatelessWidget {
                           (customTextFormFieldProvider.errorText != "" && errorStringFontSize != 0)
                               ? Container(
                                   height: errorStringFontSize + 8,
-                                  alignment: Alignment.centerLeft,
                                   child: Text(
                                     customTextFormFieldProvider.errorText,
                                     style: TextStyle(fontSize: errorStringFontSize, color: Colors.red),
@@ -262,7 +264,8 @@ class KeicyTextFormField extends StatelessWidget {
 }
 
 class KeicyTextFormFieldProvider extends ChangeNotifier {
-  static KeicyTextFormFieldProvider of(BuildContext context, {bool listen = false}) => Provider.of<KeicyTextFormFieldProvider>(context, listen: listen);
+  static KeicyTextFormFieldProvider of(BuildContext context, {bool listen = false}) =>
+      Provider.of<KeicyTextFormFieldProvider>(context, listen: listen);
 
   bool _isValidated = false;
   bool get isValidated => _isValidated;
