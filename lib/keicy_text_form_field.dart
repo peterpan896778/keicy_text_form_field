@@ -1,290 +1,161 @@
 library keicy_text_form_field;
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter/services.dart';
 
 class KeicyTextFormField extends StatelessWidget {
-  KeicyTextFormField({
-    Key key,
-    @required this.width,
-    @required this.height,
-    this.initialValue,
-    this.controller,
-    this.fixedHeightState = false,
-    this.prefixIcons = const [],
-    this.suffixIcons = const [],
-    this.isPrefixIconOutofField = false,
-    this.isSuffixIconOutofField = false,
-    this.enableShowPassword = false,
-    this.iconSpacing = 10,
-    this.label = "",
-    this.labelStyle,
-    this.labelSpacing,
-    this.border = const Border(bottom: BorderSide(width: 1, color: Colors.black)),
-    this.errorBorder = const Border(bottom: BorderSide(width: 1, color: Colors.red)),
-    this.borderRadius = 0,
-    this.textStyle = const TextStyle(fontSize: 20, color: Colors.black),
-    this.hintStyle = const TextStyle(fontSize: 20, color: Colors.grey),
-    this.hintText = "",
-    this.contentHorizontalPadding = 5,
-    this.contentVerticalPadding = 5,
-    this.textAlign = TextAlign.start,
-    this.keyboardType = TextInputType.text,
-    this.validatorHandler,
-    this.onSaveHandler,
-    this.fillColor = Colors.transparent,
-    this.autovalidate = false,
-    this.obscureText = false,
-    this.autofocus = false,
-    this.onChangeHandler,
-    this.onTapHandler,
-    this.onFieldSubmittedHandler,
-    this.onEditingCompleteHandler,
-    this.maxLines = 1,
-    this.textInputAction = TextInputAction.done,
-    this.readOnly = false,
-    this.errorStringFontSize,
-    this.inputFormatters,
-    this.focusNode,
-  }) : super(key: key);
-
-  final double width;
-  final double height;
-  final String initialValue;
-  final TextEditingController controller;
-  final bool fixedHeightState;
-  final List<Widget> prefixIcons;
-  final List<Widget> suffixIcons;
-  final bool isPrefixIconOutofField;
-  final bool isSuffixIconOutofField;
-  final bool enableShowPassword;
-  final double iconSpacing;
-  final String label;
-  final TextStyle labelStyle;
-  final double labelSpacing;
-  final Border border;
-  final Border errorBorder;
-  final double borderRadius;
-  final double contentHorizontalPadding;
-  final double contentVerticalPadding;
-  final TextStyle textStyle;
-  final TextStyle hintStyle;
-  final String hintText;
-  final Color fillColor;
-  double errorStringFontSize;
-  FocusNode focusNode;
-
-  final TextAlign textAlign;
-  final TextInputType keyboardType;
-
-  final bool autovalidate;
-  final bool obscureText;
-  final Function(String) validatorHandler;
-  final Function(String) onSaveHandler;
-  final Function(String) onChangeHandler;
-  final Function(String) onFieldSubmittedHandler;
-  final Function onTapHandler;
-  final Function onEditingCompleteHandler;
+  final TextEditingController? controller;
+  final FocusNode? focusNode;
+  final double? width;
+  final InputBorder border;
+  final InputBorder? focusedBorder;
+  final InputBorder? disabledBorder;
+  final InputBorder? errorBorder;
+  final InputBorder? focusedErrorBorder;
+  final EdgeInsetsGeometry contentPadding;
   final bool autofocus;
-  final int maxLines;
-  final TextInputAction textInputAction;
   final bool readOnly;
-  final inputFormatters;
+  final bool obscureText;
+  final TextStyle? style;
+  final String? hintText;
+  final TextStyle? hintStyle;
+  final String? labelText;
+  final TextStyle? labelStyle;
+  final FloatingLabelBehavior? floatingLabelBehavior;
+  final TextStyle? errorStyle;
+  final int errorMaxLines;
+  final TextAlign textAlign;
+  final TextInputAction textInputAction;
+  final TextInputType? keyboardType;
+  final int maxLines;
+  final Widget? prefixIcon;
+  final BoxConstraints? prefixIconConstraints;
+  final List<TextInputFormatter>? inputFormatters;
+  final Function(String)? onChanged;
+  final Function()? onEditingComplete;
+  final Function(String)? onFieldSubmitted;
+  final Function(String)? validator;
+  final Function(String)? onSaved;
+  final Function()? onTap;
+
+  const KeicyTextFormField({
+    Key? key,
+    this.controller,
+    this.focusNode,
+    this.width,
+    this.border = const OutlineInputBorder(),
+    this.focusedBorder,
+    this.disabledBorder,
+    this.errorBorder,
+    this.focusedErrorBorder,
+    this.contentPadding = const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+    this.autofocus = false,
+    this.readOnly = false,
+    this.obscureText = false,
+    this.style,
+    this.hintText,
+    this.hintStyle,
+    this.labelText,
+    this.labelStyle,
+    this.floatingLabelBehavior = FloatingLabelBehavior.always,
+    this.errorStyle,
+    this.errorMaxLines = 1,
+    this.textAlign = TextAlign.start,
+    this.textInputAction = TextInputAction.done,
+    this.keyboardType,
+    this.maxLines = 1,
+    this.prefixIcon,
+    this.prefixIconConstraints,
+    this.inputFormatters,
+    this.onChanged,
+    this.onEditingComplete,
+    this.onFieldSubmitted,
+    this.validator,
+    this.onSaved,
+    this.onTap,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if (errorStringFontSize == null) errorStringFontSize = textStyle.fontSize * 0.8;
-    focusNode = focusNode ?? FocusNode();
+    InputBorder? focusedBorder;
+    InputBorder? errorBorder;
+    InputBorder? focusedErrorBorder;
+    focusedBorder = this.focusedBorder ?? border;
+    focusedBorder = focusedBorder.copyWith(
+      borderSide: focusedBorder.borderSide.copyWith(width: 1.5),
+    );
+    errorBorder = this.errorBorder ?? border;
+    errorBorder = errorBorder.copyWith(borderSide: errorBorder.borderSide.copyWith(color: Colors.red));
+    focusedErrorBorder = this.focusedErrorBorder ?? errorBorder;
+    focusedErrorBorder = focusedErrorBorder.copyWith(borderSide: focusedErrorBorder.borderSide.copyWith(width: 1.5));
 
-    return Material(
-      color: Colors.transparent,
-      child: MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (_) => KeicyTextFormFieldProvider()),
-        ],
-        child: Consumer<KeicyTextFormFieldProvider>(
-          builder: (context, customTextFormFieldProvider, _) {
-            Widget prefixIcon = SizedBox();
-            Widget suffixIcon = SizedBox();
-            if (prefixIcons.length != 0 && customTextFormFieldProvider.isValidated) {
-              prefixIcon = prefixIcons[0];
-            } else if (prefixIcons.length != 0 && !customTextFormFieldProvider.isValidated) {
-              prefixIcon = prefixIcons.length == 2 ? prefixIcons[1] : prefixIcons[0];
-            }
-
-            if (suffixIcons.length != 0 && customTextFormFieldProvider.isValidated) {
-              suffixIcon = suffixIcons[0];
-            } else if (suffixIcons.length != 0 && !customTextFormFieldProvider.isValidated) {
-              suffixIcon = suffixIcons.length == 2 ? suffixIcons[1] : suffixIcons[0];
-            }
-
-            return GestureDetector(
-              onTap: () {
-                FocusScope.of(context).requestFocus(focusNode);
-              },
-              child: Container(
-                width: width,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    /// prefix Icon
-                    (isPrefixIconOutofField && prefixIcons.length != 0)
-                        ? Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              prefixIcon,
-                              SizedBox(width: iconSpacing),
-                            ],
-                          )
-                        : SizedBox(),
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          /// label
-                          (label != "")
-                              ? Column(
-                                  children: [
-                                    Text(label, style: labelStyle ?? textStyle),
-                                    SizedBox(height: labelSpacing ?? labelSpacing),
-                                  ],
-                                )
-                              : SizedBox(),
-                          Container(
-                            width: double.maxFinite,
-                            height: height,
-                            padding: EdgeInsets.symmetric(
-                              horizontal: contentHorizontalPadding,
-                              vertical: contentVerticalPadding,
-                            ),
-                            alignment: (keyboardType == TextInputType.multiline) ? Alignment.topLeft : Alignment.center,
-                            decoration: BoxDecoration(
-                              color: fillColor,
-                              border: (customTextFormFieldProvider.errorText == "") ? border : errorBorder,
-                              borderRadius: ((customTextFormFieldProvider.errorText == "" && border.isUniform) ||
-                                      (customTextFormFieldProvider.errorText != "" && errorBorder.isUniform))
-                                  ? BorderRadius.circular(borderRadius)
-                                  : null,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                /// prefix icon
-                                (!isPrefixIconOutofField && prefixIcons.length != 0) ? prefixIcon : SizedBox(),
-                                (!isPrefixIconOutofField && prefixIcons.length != 0) ? SizedBox(width: iconSpacing) : SizedBox(),
-                                Expanded(
-                                  child: TextFormField(
-                                    focusNode: focusNode,
-                                    initialValue: controller == null ? initialValue : null,
-                                    controller: controller,
-                                    style: textStyle,
-                                    autofocus: autofocus,
-                                    maxLines: maxLines,
-                                    textInputAction: textInputAction,
-                                    readOnly: readOnly,
-                                    textAlign: textAlign,
-                                    keyboardType: keyboardType,
-                                    autovalidate: autovalidate,
-                                    decoration: InputDecoration(
-                                      errorStyle: TextStyle(fontSize: 0, color: Colors.transparent, height: 0),
-                                      isDense: true,
-                                      isCollapsed: true,
-                                      hintText: hintText,
-                                      hintStyle: hintStyle,
-                                      border: InputBorder.none,
-                                      enabledBorder: InputBorder.none,
-                                      focusedBorder: InputBorder.none,
-                                      focusedErrorBorder: InputBorder.none,
-                                      errorBorder: InputBorder.none,
-                                      disabledBorder: InputBorder.none,
-                                      filled: true,
-                                      fillColor: Colors.transparent,
-                                      contentPadding: EdgeInsets.zero,
-                                    ),
-                                    inputFormatters: inputFormatters,
-                                    obscureText: obscureText,
-                                    onTap: onTapHandler,
-                                    onChanged: (input) {
-                                      customTextFormFieldProvider.setErrorText("");
-                                      if (onChangeHandler != null) onChangeHandler(input.trim());
-                                    },
-                                    validator: (input) {
-                                      if (validatorHandler == null) return null;
-                                      var result = validatorHandler(input.trim());
-                                      if (result != null)
-                                        customTextFormFieldProvider.setIsValidated(false, result);
-                                      else
-                                        customTextFormFieldProvider.setIsValidated(true, "");
-                                      return result;
-                                    },
-                                    onSaved: (input) {
-                                      if (onSaveHandler == null) return null;
-                                      onSaveHandler(input.trim());
-                                    },
-                                    onEditingComplete: onEditingCompleteHandler,
-                                    onFieldSubmitted: onFieldSubmittedHandler,
-                                  ),
-                                ),
-                                ((!isSuffixIconOutofField && suffixIcons.length != 0) || enableShowPassword)
-                                    ? SizedBox(width: iconSpacing)
-                                    : SizedBox(),
-                                ((!isSuffixIconOutofField && suffixIcons.length != 0) || enableShowPassword) ? suffixIcon : SizedBox()
-                              ],
-                            ),
-                          ),
-                          (customTextFormFieldProvider.errorText != "" && errorStringFontSize != 0)
-                              ? Container(
-                                  height: errorStringFontSize + 8,
-                                  child: Text(
-                                    customTextFormFieldProvider.errorText,
-                                    style: TextStyle(fontSize: errorStringFontSize, color: Colors.red),
-                                  ),
-                                )
-                              : (fixedHeightState)
-                                  ? SizedBox(height: errorStringFontSize + 8)
-                                  : SizedBox(),
-                        ],
-                      ),
-                    ),
-                    (isSuffixIconOutofField && suffixIcons.length != 0) ? SizedBox(width: iconSpacing) : SizedBox(),
-                    (isSuffixIconOutofField && suffixIcons.length != 0) ? suffixIcon : SizedBox(),
-                  ],
-                ),
-              ),
-            );
-          },
+    return SizedBox(
+      width: width,
+      child: TextFormField(
+        controller: controller,
+        focusNode: focusNode,
+        autofocus: autofocus,
+        style: style,
+        decoration: InputDecoration(
+          border: border,
+          focusedBorder: focusedBorder,
+          enabledBorder: border,
+          disabledBorder: disabledBorder ?? border,
+          errorBorder: errorBorder,
+          focusedErrorBorder: focusedErrorBorder,
+          isCollapsed: true,
+          isDense: true,
+          contentPadding: contentPadding,
+          hintText: hintText,
+          hintStyle: hintStyle,
+          labelText: labelText,
+          labelStyle: labelStyle,
+          floatingLabelBehavior: floatingLabelBehavior,
+          errorStyle: errorStyle,
+          errorMaxLines: errorMaxLines,
+          prefixIcon: prefixIcon,
+          prefixIconConstraints: prefixIconConstraints,
         ),
+        readOnly: readOnly,
+        obscureText: obscureText,
+        textAlign: textAlign,
+        textInputAction: textInputAction,
+        keyboardType: keyboardType,
+        maxLines: maxLines,
+        inputFormatters: inputFormatters,
+        onChanged: (input) {
+          if (onChanged != null) {
+            onChanged!(input.trim());
+          }
+        },
+        onEditingComplete: () {
+          if (onEditingComplete != null) {
+            onEditingComplete!();
+          }
+        },
+        onFieldSubmitted: (input) {
+          if (onFieldSubmitted != null) {
+            onFieldSubmitted!(input.trim());
+          }
+        },
+        validator: (input) {
+          if (validator != null) {
+            return validator!(input!.trim());
+          } else {
+            return null;
+          }
+        },
+        onSaved: (input) {
+          if (onSaved != null && input != null) {
+            onSaved!(input.trim());
+          }
+        },
+        onTap: () {
+          if (onTap != null) {
+            onTap!();
+          }
+        },
       ),
     );
-  }
-}
-
-class KeicyTextFormFieldProvider extends ChangeNotifier {
-  static KeicyTextFormFieldProvider of(BuildContext context, {bool listen = false}) =>
-      Provider.of<KeicyTextFormFieldProvider>(context, listen: listen);
-
-  bool _isValidated = false;
-  bool get isValidated => _isValidated;
-
-  String _errorText = "";
-  String get errorText => _errorText;
-
-  void setErrorText(String errorText) {
-    if (_errorText != errorText) {
-      _errorText = errorText;
-      notifyListeners();
-    }
-  }
-
-  void setIsValidated(bool isValidated, String errorText) {
-    if (_isValidated != isValidated || _errorText != errorText) {
-      _isValidated = isValidated;
-      _errorText = errorText;
-      notifyListeners();
-    }
   }
 }
