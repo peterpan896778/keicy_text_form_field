@@ -2,8 +2,9 @@ library keicy_text_form_field;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class KeicyTextFormField extends StatelessWidget {
+class KeicyTextFormField extends StatefulWidget {
   final TextEditingController? controller;
   final FocusNode? focusNode;
   final double? width;
@@ -28,8 +29,18 @@ class KeicyTextFormField extends StatelessWidget {
   final TextInputAction textInputAction;
   final TextInputType? keyboardType;
   final int maxLines;
+  final Widget? prefix;
   final Widget? prefixIcon;
+  final String? prefixText;
+  final TextStyle? prefixStyle;
   final BoxConstraints? prefixIconConstraints;
+  final Widget? suffix;
+  final Widget? suffixIcon;
+  final String? suffixText;
+  final TextStyle? suffixStyle;
+  final BoxConstraints? suffixIconConstraints;
+  final double? passIconSize;
+  final Color? passIconColor;
   final List<TextInputFormatter>? inputFormatters;
   final Function(String)? onChanged;
   final Function()? onEditingComplete;
@@ -64,8 +75,18 @@ class KeicyTextFormField extends StatelessWidget {
     this.textInputAction = TextInputAction.done,
     this.keyboardType,
     this.maxLines = 1,
+    this.prefix,
     this.prefixIcon,
+    this.prefixText,
+    this.prefixStyle,
     this.prefixIconConstraints,
+    this.suffix,
+    this.suffixIcon,
+    this.suffixText,
+    this.suffixStyle,
+    this.suffixIconConstraints,
+    this.passIconSize = 20,
+    this.passIconColor = Colors.black,
     this.inputFormatters,
     this.onChanged,
     this.onEditingComplete,
@@ -76,83 +97,122 @@ class KeicyTextFormField extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<KeicyTextFormField> createState() => _KeicyTextFormFieldState();
+}
+
+class _KeicyTextFormFieldState extends State<KeicyTextFormField> {
+  bool isShowPass = true;
+
+  @override
+  void initState() {
+    super.initState();
+
+    isShowPass = true;
+  }
+
+  @override
   Widget build(BuildContext context) {
     InputBorder? focusedBorder;
     InputBorder? errorBorder;
     InputBorder? focusedErrorBorder;
-    focusedBorder = this.focusedBorder ?? border;
+    focusedBorder = this.widget.focusedBorder ?? widget.border;
     focusedBorder = focusedBorder.copyWith(
       borderSide: focusedBorder.borderSide.copyWith(width: 1.5),
     );
-    errorBorder = this.errorBorder ?? border;
+    errorBorder = this.widget.errorBorder ?? widget.border;
     errorBorder = errorBorder.copyWith(borderSide: errorBorder.borderSide.copyWith(color: Colors.red));
-    focusedErrorBorder = this.focusedErrorBorder ?? errorBorder;
+    focusedErrorBorder = this.widget.focusedErrorBorder ?? errorBorder;
     focusedErrorBorder = focusedErrorBorder.copyWith(borderSide: focusedErrorBorder.borderSide.copyWith(width: 1.5));
 
     return SizedBox(
-      width: width,
+      width: widget.width,
       child: TextFormField(
-        controller: controller,
-        focusNode: focusNode,
-        autofocus: autofocus,
-        style: style,
+        controller: widget.controller,
+        focusNode: widget.focusNode,
+        autofocus: widget.autofocus,
+        style: widget.style,
         decoration: InputDecoration(
-          border: border,
+          border: widget.border,
           focusedBorder: focusedBorder,
-          enabledBorder: border,
-          disabledBorder: disabledBorder ?? border,
+          enabledBorder: widget.border,
+          disabledBorder: widget.disabledBorder ?? widget.border,
           errorBorder: errorBorder,
           focusedErrorBorder: focusedErrorBorder,
           isCollapsed: true,
           isDense: true,
-          contentPadding: contentPadding,
-          hintText: hintText,
-          hintStyle: hintStyle,
-          labelText: labelText,
-          labelStyle: labelStyle,
-          floatingLabelBehavior: floatingLabelBehavior,
-          errorStyle: errorStyle,
-          errorMaxLines: errorMaxLines,
-          prefixIcon: prefixIcon,
-          prefixIconConstraints: prefixIconConstraints,
+          contentPadding: widget.contentPadding,
+          hintText: widget.hintText,
+          hintStyle: widget.hintStyle,
+          labelText: widget.labelText,
+          labelStyle: widget.labelStyle,
+          floatingLabelBehavior: widget.floatingLabelBehavior,
+          errorStyle: widget.errorStyle,
+          errorMaxLines: widget.errorMaxLines,
+          prefix: widget.prefix,
+          prefixIcon: widget.prefixIcon,
+          prefixText: widget.prefixText,
+          prefixStyle: widget.prefixStyle,
+          prefixIconConstraints: widget.prefixIconConstraints,
+          suffix: widget.suffix,
+          suffixIcon: widget.obscureText
+              ? GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      isShowPass = !isShowPass;
+                    });
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      FaIcon(
+                        isShowPass ? FontAwesomeIcons.solidEye : FontAwesomeIcons.solidEyeSlash,
+                        size: widget.passIconSize,
+                        color: widget.passIconColor,
+                      ),
+                    ],
+                  ),
+                )
+              : widget.suffixIcon,
+          suffixText: widget.suffixText,
+          suffixStyle: widget.suffixStyle,
         ),
-        readOnly: readOnly,
-        obscureText: obscureText,
-        textAlign: textAlign,
-        textInputAction: textInputAction,
-        keyboardType: keyboardType,
-        maxLines: maxLines,
-        inputFormatters: inputFormatters,
+        readOnly: widget.readOnly,
+        obscureText: widget.obscureText ? isShowPass : widget.obscureText,
+        textAlign: widget.textAlign,
+        textInputAction: widget.textInputAction,
+        keyboardType: widget.keyboardType,
+        maxLines: widget.maxLines,
+        inputFormatters: widget.inputFormatters,
         onChanged: (input) {
-          if (onChanged != null) {
-            onChanged!(input.trim());
+          if (widget.onChanged != null) {
+            widget.onChanged!(input.trim());
           }
         },
         onEditingComplete: () {
-          if (onEditingComplete != null) {
-            onEditingComplete!();
+          if (widget.onEditingComplete != null) {
+            widget.onEditingComplete!();
           }
         },
         onFieldSubmitted: (input) {
-          if (onFieldSubmitted != null) {
-            onFieldSubmitted!(input.trim());
+          if (widget.onFieldSubmitted != null) {
+            widget.onFieldSubmitted!(input.trim());
           }
         },
         validator: (input) {
-          if (validator != null) {
-            return validator!(input!.trim());
+          if (widget.validator != null) {
+            return widget.validator!(input!.trim());
           } else {
             return null;
           }
         },
         onSaved: (input) {
-          if (onSaved != null && input != null) {
-            onSaved!(input.trim());
+          if (widget.onSaved != null && input != null) {
+            widget.onSaved!(input.trim());
           }
         },
         onTap: () {
-          if (onTap != null) {
-            onTap!();
+          if (widget.onTap != null) {
+            widget.onTap!();
           }
         },
       ),
