@@ -123,10 +123,15 @@ class _KeicyTextFormFieldState extends State<KeicyTextFormField> {
     } else {
       focusedBorder = widget.focusedBorder;
     }
-    errorBorder = widget.errorBorder ?? widget.border;
-    errorBorder = errorBorder.copyWith(borderSide: errorBorder.borderSide.copyWith(color: Colors.red));
+    if (widget.errorBorder == null) {
+      errorBorder = widget.border;
+      errorBorder = errorBorder.copyWith(borderSide: errorBorder.borderSide.copyWith(color: Colors.red));
+    } else {
+      errorBorder = widget.errorBorder;
+    }
+
     if (widget.focusedErrorBorder == null) {
-      focusedErrorBorder = widget.errorBorder;
+      focusedErrorBorder = errorBorder;
       focusedErrorBorder = focusedErrorBorder!.copyWith(
         borderSide: focusedErrorBorder.borderSide.copyWith(width: 1.5),
       );
