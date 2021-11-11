@@ -115,14 +115,24 @@ class _KeicyTextFormFieldState extends State<KeicyTextFormField> {
     InputBorder? focusedBorder;
     InputBorder? errorBorder;
     InputBorder? focusedErrorBorder;
-    focusedBorder = this.widget.focusedBorder ?? widget.border;
-    focusedBorder = focusedBorder.copyWith(
-      borderSide: focusedBorder.borderSide.copyWith(width: 1.5),
-    );
-    errorBorder = this.widget.errorBorder ?? widget.border;
+    if (widget.focusedBorder == null) {
+      focusedBorder = widget.border;
+      focusedBorder = focusedBorder.copyWith(
+        borderSide: focusedBorder.borderSide.copyWith(width: 1.5),
+      );
+    } else {
+      focusedBorder = widget.focusedBorder;
+    }
+    errorBorder = widget.errorBorder ?? widget.border;
     errorBorder = errorBorder.copyWith(borderSide: errorBorder.borderSide.copyWith(color: Colors.red));
-    focusedErrorBorder = this.widget.focusedErrorBorder ?? errorBorder;
-    focusedErrorBorder = focusedErrorBorder.copyWith(borderSide: focusedErrorBorder.borderSide.copyWith(width: 1.5));
+    if (widget.focusedErrorBorder == null) {
+      focusedErrorBorder = widget.errorBorder;
+      focusedErrorBorder = focusedErrorBorder!.copyWith(
+        borderSide: focusedErrorBorder.borderSide.copyWith(width: 1.5),
+      );
+    } else {
+      focusedErrorBorder = widget.focusedErrorBorder;
+    }
 
     return SizedBox(
       width: widget.width,
