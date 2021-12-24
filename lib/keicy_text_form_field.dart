@@ -20,6 +20,7 @@ class KeicyTextFormField extends StatefulWidget {
   final TextStyle? style;
   final String? hintText;
   final TextStyle? hintStyle;
+  final Widget? label;
   final String? labelText;
   final TextStyle? labelStyle;
   final FloatingLabelBehavior? floatingLabelBehavior;
@@ -66,6 +67,7 @@ class KeicyTextFormField extends StatefulWidget {
     this.style,
     this.hintText,
     this.hintStyle,
+    this.label,
     this.labelText,
     this.labelStyle,
     this.floatingLabelBehavior = FloatingLabelBehavior.always,
@@ -158,6 +160,7 @@ class _KeicyTextFormFieldState extends State<KeicyTextFormField> {
           contentPadding: widget.contentPadding,
           hintText: widget.hintText,
           hintStyle: widget.hintStyle,
+          label: widget.label,
           labelText: widget.labelText,
           labelStyle: widget.labelStyle,
           floatingLabelBehavior: widget.floatingLabelBehavior,
