@@ -22,7 +22,7 @@ class KeicyTextFormField extends StatefulWidget {
   final TextStyle? hintStyle;
   final String? labelText;
   final TextStyle? labelStyle;
-  final bool isImpot;
+  final bool isImport;
   final FloatingLabelBehavior? floatingLabelBehavior;
   final TextStyle? errorStyle;
   final int errorMaxLines;
@@ -67,7 +67,7 @@ class KeicyTextFormField extends StatefulWidget {
     this.style,
     this.hintText,
     this.hintStyle,
-    this.isImpot = false,
+    this.isImport = false,
     this.labelText,
     this.labelStyle,
     this.floatingLabelBehavior = FloatingLabelBehavior.always,
@@ -163,7 +163,7 @@ class _KeicyTextFormFieldState extends State<KeicyTextFormField> {
           label: Wrap(
             children: [
               Text("${widget.labelText}", style: widget.labelStyle),
-              if (widget.isImpot && widget.labelText != null)
+              if (widget.isImport && widget.labelText != null)
                 Text(
                   "  *",
                   style: widget.labelStyle != null
