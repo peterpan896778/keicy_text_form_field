@@ -20,9 +20,9 @@ class KeicyTextFormField extends StatefulWidget {
   final TextStyle? style;
   final String? hintText;
   final TextStyle? hintStyle;
-  final Widget? label;
   final String? labelText;
   final TextStyle? labelStyle;
+  final bool isImpot;
   final FloatingLabelBehavior? floatingLabelBehavior;
   final TextStyle? errorStyle;
   final int errorMaxLines;
@@ -67,7 +67,7 @@ class KeicyTextFormField extends StatefulWidget {
     this.style,
     this.hintText,
     this.hintStyle,
-    this.label,
+    this.isImpot = false,
     this.labelText,
     this.labelStyle,
     this.floatingLabelBehavior = FloatingLabelBehavior.always,
@@ -160,8 +160,20 @@ class _KeicyTextFormFieldState extends State<KeicyTextFormField> {
           contentPadding: widget.contentPadding,
           hintText: widget.hintText,
           hintStyle: widget.hintStyle,
-          label: widget.label,
-          labelText: widget.labelText,
+          label: widget.isImpot && widget.labelText != null
+              ? Wrap(
+                  children: [
+                    Text("${widget.labelText}", style: widget.labelStyle),
+                    Text(
+                      "  *",
+                      style: widget.labelStyle != null
+                          ? widget.labelStyle!.copyWith(color: Colors.red, fontWeight: FontWeight.bold)
+                          : Theme.of(context).inputDecorationTheme.labelStyle!.copyWith(color: Colors.red, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                )
+              : null,
+          labelText: widget.isImpot && widget.labelText != null ? null : widget.labelText,
           labelStyle: widget.labelStyle,
           floatingLabelBehavior: widget.floatingLabelBehavior,
           errorStyle: widget.errorStyle,
