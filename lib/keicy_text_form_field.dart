@@ -160,18 +160,20 @@ class _KeicyTextFormFieldState extends State<KeicyTextFormField> {
           contentPadding: widget.contentPadding,
           hintText: widget.hintText,
           hintStyle: widget.hintStyle,
-          label: Wrap(
-            children: [
-              Text("${widget.labelText}", style: widget.labelStyle),
-              if (widget.isImport && widget.labelText != null)
-                Text(
-                  "  *",
-                  style: widget.labelStyle != null
-                      ? widget.labelStyle!.copyWith(color: Colors.red, fontWeight: FontWeight.bold)
-                      : Theme.of(context).inputDecorationTheme.labelStyle!.copyWith(color: Colors.red, fontWeight: FontWeight.bold),
-                ),
-            ],
-          ),
+          label: widget.labelText != null
+              ? Wrap(
+                  children: [
+                    Text("${widget.labelText}", style: widget.labelStyle),
+                    if (widget.isImport && widget.labelText != null)
+                      Text(
+                        "  *",
+                        style: widget.labelStyle != null
+                            ? widget.labelStyle!.copyWith(color: Colors.red, fontWeight: FontWeight.bold)
+                            : Theme.of(context).inputDecorationTheme.labelStyle!.copyWith(color: Colors.red, fontWeight: FontWeight.bold),
+                      ),
+                  ],
+                )
+              : null,
           labelText: null,
           labelStyle: null,
           floatingLabelBehavior: widget.floatingLabelBehavior,
