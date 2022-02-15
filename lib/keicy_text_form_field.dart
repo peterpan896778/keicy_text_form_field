@@ -42,6 +42,7 @@ class KeicyTextFormField extends StatefulWidget {
   final BoxConstraints? suffixIconConstraints;
   final double? passIconSize;
   final Color? passIconColor;
+  final Color? fillColor;
   final List<TextInputFormatter>? inputFormatters;
   final Function(String)? onChanged;
   final Function()? onEditingComplete;
@@ -89,6 +90,7 @@ class KeicyTextFormField extends StatefulWidget {
     this.suffixIconConstraints,
     this.passIconSize = 20,
     this.passIconColor = Colors.black,
+    this.fillColor,
     this.inputFormatters,
     this.onChanged,
     this.onEditingComplete,
@@ -206,6 +208,7 @@ class _KeicyTextFormFieldState extends State<KeicyTextFormField> {
               : widget.suffixIcon,
           suffixText: widget.suffixText,
           suffixStyle: widget.suffixStyle,
+          fillColor: widget.fillColor,
         ),
         readOnly: widget.readOnly,
         obscureText: widget.obscureText ? isShowPass : widget.obscureText,
