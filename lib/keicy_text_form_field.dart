@@ -48,8 +48,8 @@ class KeicyTextFormField extends StatefulWidget {
   final Function(String)? onChanged;
   final Function()? onEditingComplete;
   final Function(String)? onFieldSubmitted;
-  final Function(String)? validator;
-  final Function(String)? onSaved;
+  final Function(String?)? validator;
+  final Function(String?)? onSaved;
   final Function()? onTap;
 
   const KeicyTextFormField({
@@ -237,14 +237,14 @@ class _KeicyTextFormFieldState extends State<KeicyTextFormField> {
         },
         validator: (input) {
           if (widget.validator != null) {
-            return widget.validator!(input!.trim());
+            return widget.validator!(input);
           } else {
             return null;
           }
         },
         onSaved: (input) {
-          if (widget.onSaved != null && input != null) {
-            widget.onSaved!(input.trim());
+          if (widget.onSaved != null) {
+            widget.onSaved!(input);
           }
         },
         onTap: () {
