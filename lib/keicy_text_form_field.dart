@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class KeicyTextFormField extends StatefulWidget {
+  final String? initialValue;
   final TextEditingController? controller;
   final FocusNode? focusNode;
   final double? width;
@@ -53,6 +54,7 @@ class KeicyTextFormField extends StatefulWidget {
 
   const KeicyTextFormField({
     Key? key,
+    this.initialValue,
     this.controller,
     this.focusNode,
     this.width,
@@ -146,6 +148,7 @@ class _KeicyTextFormFieldState extends State<KeicyTextFormField> {
     return SizedBox(
       width: widget.width,
       child: TextFormField(
+        initialValue: widget.initialValue,
         controller: widget.controller,
         focusNode: widget.focusNode,
         autofocus: widget.autofocus,
